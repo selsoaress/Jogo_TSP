@@ -26,384 +26,313 @@
       --clr-marker:    #9E9E9E;
       --clr-success:   #2E7D32;
       --clr-success-lt:#E8F5E9;
+      --clr-gold:      #F59E0B;
+      --clr-gold-lt:   #FFFBEB;
       --radius:        14px;
       --shadow:        0 4px 24px rgba(0,0,0,0.08);
       --font-ui:       'Inter', system-ui, sans-serif;
       --font-display:  'Space Grotesk', system-ui, sans-serif;
     }
 
-    html, body {
-      height: 100%;
-      font-family: var(--font-ui);
-      background: var(--clr-bg);
-      color: var(--clr-text);
-      overflow: hidden;
-    }
+    html, body { height: 100%; font-family: var(--font-ui); background: var(--clr-bg); color: var(--clr-text); overflow: hidden; }
 
-    #app {
-      display: grid;
-      grid-template-columns: 1fr 280px;
-      grid-template-rows: 56px 1fr;
-      height: 100vh;
-    }
+    #app { display: grid; grid-template-columns: 1fr 300px; grid-template-rows: 56px 1fr; height: 100vh; }
 
     /* ── Header ── */
     #header {
       grid-column: 1 / -1;
-      display: flex;
-      align-items: center;
-      gap: 12px;
+      display: flex; align-items: center; gap: 12px;
       padding: 0 20px;
       background: var(--clr-surface);
       border-bottom: 1px solid var(--clr-border);
       z-index: 1000;
     }
-
-    #header .logo {
-      font-family: var(--font-display);
-      font-size: 17px;
-      font-weight: 700;
-      letter-spacing: -0.3px;
-      color: var(--clr-text);
-    }
-
+    #header .logo { font-family: var(--font-display); font-size: 17px; font-weight: 700; letter-spacing: -0.3px; }
     #header .logo span { color: var(--clr-accent); }
     #header .spacer { flex: 1; }
-
-    #header #status-bar {
-      font-size: 13px;
-      color: var(--clr-muted);
-      font-weight: 500;
-    }
-
+    #header #status-bar { font-size: 13px; color: var(--clr-muted); font-weight: 500; }
     #header #status-bar strong { color: var(--clr-accent); }
 
-    #btn-toggle-sidebar {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 32px;
-      height: 32px;
-      border: 1px solid var(--clr-border);
-      border-radius: 8px;
-      background: var(--clr-surface);
-      cursor: pointer;
-      flex-shrink: 0;
+    /* N picker in header */
+    #n-picker {
+      display: flex; align-items: center; gap: 6px;
+      padding: 0 10px;
+      border-left: 1px solid var(--clr-border);
+    }
+    #n-picker label { font-size: 12px; font-weight: 600; color: var(--clr-muted); white-space: nowrap; }
+    #n-picker select {
+      font-family: var(--font-ui); font-size: 13px; font-weight: 700;
+      color: var(--clr-accent); background: var(--clr-accent-lt);
+      border: 1px solid #BBDEFB; border-radius: 7px;
+      padding: 4px 8px; cursor: pointer; appearance: none;
+    }
+
+    /* Seed picker in header */
+    #seed-picker {
+      display: flex; align-items: center; gap: 5px;
+      padding: 0 10px;
+      border-left: 1px solid var(--clr-border);
+    }
+    #seed-picker label { font-size: 12px; font-weight: 600; color: var(--clr-muted); white-space: nowrap; }
+    #seed-input {
+      font-family: var(--font-ui); font-size: 12px; font-weight: 600;
+      color: var(--clr-text); background: var(--clr-bg);
+      border: 1px solid var(--clr-border); border-radius: 7px;
+      padding: 4px 7px; width: 90px;
+    }
+    #seed-input:focus { outline: none; border-color: var(--clr-accent); }
+    #seed-input::placeholder { color: var(--clr-muted); font-weight: 400; font-style: italic; }
+    #btn-load-seed {
+      display: flex; align-items: center; justify-content: center;
+      width: 26px; height: 26px; flex-shrink: 0;
+      border: 1px solid var(--clr-border); border-radius: 7px;
+      background: var(--clr-surface); cursor: pointer;
+      font-size: 14px; color: var(--clr-accent);
       transition: background 0.15s;
     }
+    #btn-load-seed:hover { background: var(--clr-accent-lt); border-color: #BBDEFB; }
 
-    #btn-toggle-sidebar:hover { background: var(--clr-bg); }
-
-    #btn-toggle-sidebar svg {
-      width: 16px;
-      height: 16px;
-      stroke: var(--clr-muted);
-      transition: transform 0.3s;
+    #btn-toggle-sidebar {
+      display: flex; align-items: center; justify-content: center;
+      width: 32px; height: 32px;
+      border: 1px solid var(--clr-border); border-radius: 8px;
+      background: var(--clr-surface); cursor: pointer; flex-shrink: 0; transition: background 0.15s;
     }
-
+    #btn-toggle-sidebar:hover { background: var(--clr-bg); }
+    #btn-toggle-sidebar svg { width: 16px; height: 16px; stroke: var(--clr-muted); transition: transform 0.3s; }
     #app.sidebar-collapsed #btn-toggle-sidebar svg { transform: scaleX(-1); }
 
     /* ── Map ── */
-    #map-container {
-      grid-column: 1;
-      grid-row: 2;
-      position: relative;
-      overflow: hidden;
-    }
-
-    #leaflet-map {
-      width: 100%;
-      height: 100%;
-    }
+    #map-container { grid-column: 1; grid-row: 2; position: relative; overflow: hidden; }
+    #leaflet-map { width: 100%; height: 100%; }
 
     /* ── Sidebar ── */
     #sidebar {
-      grid-column: 2;
-      grid-row: 2;
+      grid-column: 2; grid-row: 2;
       background: var(--clr-surface);
       border-left: 1px solid var(--clr-border);
-      display: flex;
-      flex-direction: column;
-      overflow-y: auto;
-      overflow-x: hidden;
-      padding: 20px 16px 24px;
+      display: flex; flex-direction: column;
+      overflow-y: auto; overflow-x: hidden;
+      padding: 16px 14px 20px;
       transition: width 0.3s ease, padding 0.3s ease;
-      width: 280px;
+      width: 300px;
     }
+    #app.sidebar-collapsed #sidebar { width: 0; padding: 0; border-left-color: transparent; overflow: hidden; }
+    #app.sidebar-collapsed #sidebar > * { opacity: 0; pointer-events: none; }
 
-    #app.sidebar-collapsed #sidebar {
-      width: 0;
-      padding: 0;
-      border-left-color: transparent;
-      overflow: hidden;
-    }
-
-    #app.sidebar-collapsed #sidebar > * {
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    /* Sidebar sections */
-    .section-title {
-      font-family: var(--font-display);
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      color: var(--clr-muted);
-      margin-bottom: 10px;
-    }
-
-    #instruction-card {
-      background: var(--clr-accent-lt);
-      border: 1px solid #BBDEFB;
-      border-radius: var(--radius);
-      padding: 14px;
-      margin-bottom: 16px;
-    }
-
-    #instruction-card p {
-      font-size: 13px;
-      color: #0D47A1;
-      line-height: 1.55;
-    }
-
-    #progress-section { margin-bottom: 18px; }
-
-    #dots-row {
-      display: flex;
-      gap: 5px;
-      flex-wrap: wrap;
-      margin-top: 8px;
-    }
-
-    .dot {
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      background: #E4E8EF;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 10px;
-      font-weight: 700;
-      color: transparent;
-      transition: background 0.25s, color 0.25s;
-    }
-
-    .dot.visited {
-      background: var(--clr-accent);
-      color: #fff;
-    }
-
-    .stats-block {
-      border-radius: var(--radius);
-      padding: 14px;
-      margin-bottom: 12px;
-    }
-
-    .stats-block.player  { background: var(--clr-accent-lt); border: 1px solid #BBDEFB; }
-    .stats-block.optimal { background: var(--clr-optimal-lt); border: 1px solid #FFCDD2; }
-    .stats-block.diff    { background: var(--clr-success-lt); border: 1px solid #C8E6C9; }
-
-    .stats-block .block-label {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.6px;
-      text-transform: uppercase;
-      margin-bottom: 8px;
-    }
-
-    .stats-block.player .block-label  { color: #1565C0; }
-    .stats-block.optimal .block-label { color: #B71C1C; }
-    .stats-block.diff .block-label    { color: #1B5E20; }
-
-    .stat-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      margin-bottom: 4px;
-    }
-
-    .stat-row:last-child { margin-bottom: 0; }
-    .stat-label { font-size: 12px; color: var(--clr-muted); }
-
-    .stat-value {
-      font-family: var(--font-display);
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--clr-text);
-    }
-
-    .stats-block.player .stat-value  { color: var(--clr-accent); }
-    .stats-block.optimal .stat-value { color: var(--clr-optimal); }
-    .stats-block.diff .stat-value    { color: var(--clr-success); }
-    .stat-sub { font-size: 12px; color: var(--clr-muted); text-align: right; }
-
-    #legend { margin-bottom: 18px; }
-
-    .legend-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 7px;
-      font-size: 12px;
-      color: var(--clr-muted);
-    }
-
-    .legend-line { width: 28px; height: 3px; border-radius: 2px; }
-
-    .legend-dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
+    /* ── Tabs ── */
+    #tabs {
+      display: flex; gap: 4px; margin-bottom: 14px;
+      background: var(--clr-bg); border-radius: 10px; padding: 3px;
       flex-shrink: 0;
     }
-
-    #btn-restart {
-      width: 100%;
-      padding: 13px;
-      border: none;
-      border-radius: 10px;
-      background: var(--clr-accent);
-      color: #fff;
-      font-family: var(--font-ui);
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.18s, transform 0.1s;
-      box-shadow: 0 2px 8px rgba(25,118,210,0.25);
-      margin-top: auto;
+    .tab-btn {
+      flex: 1; padding: 6px 4px;
+      font-family: var(--font-ui); font-size: 11px; font-weight: 700;
+      letter-spacing: 0.3px; text-transform: uppercase;
+      border: none; border-radius: 8px; cursor: pointer;
+      background: transparent; color: var(--clr-muted); transition: all 0.15s;
     }
+    .tab-btn.active { background: var(--clr-surface); color: var(--clr-accent); box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+    .tab-panel { display: none; flex-direction: column; gap: 12px; }
+    .tab-panel.active { display: flex; }
 
+    /* ── Common section pieces ── */
+    .section-title {
+      font-family: var(--font-display); font-size: 10px; font-weight: 700;
+      letter-spacing: 1px; text-transform: uppercase; color: var(--clr-muted); margin-bottom: 8px;
+    }
+    .card {
+      border-radius: var(--radius); padding: 12px 14px;
+      border: 1px solid var(--clr-border); background: var(--clr-surface);
+    }
+    .card.blue  { background: var(--clr-accent-lt); border-color: #BBDEFB; }
+    .card.red   { background: var(--clr-optimal-lt); border-color: #FFCDD2; }
+    .card.green { background: var(--clr-success-lt); border-color: #C8E6C9; }
+    .card.gold  { background: var(--clr-gold-lt); border-color: #FDE68A; }
+
+    .card .block-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; margin-bottom: 8px;
+    }
+    .card.blue .block-label  { color: #1565C0; }
+    .card.red  .block-label  { color: #B71C1C; }
+    .card.green .block-label { color: #1B5E20; }
+    .card.gold .block-label  { color: #92400E; }
+
+    .stat-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; }
+    .stat-row:last-child { margin-bottom: 0; }
+    .stat-label { font-size: 12px; color: var(--clr-muted); }
+    .stat-value { font-family: var(--font-display); font-size: 16px; font-weight: 700; }
+    .card.blue  .stat-value { color: var(--clr-accent); }
+    .card.red   .stat-value { color: var(--clr-optimal); }
+    .card.green .stat-value { color: var(--clr-success); }
+    .card.gold  .stat-value { color: #B45309; }
+    .stat-sub { font-size: 12px; color: var(--clr-muted); text-align: right; }
+
+    /* ── Progress dots ── */
+    #dots-row { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 6px; }
+    .dot {
+      width: 22px; height: 22px; border-radius: 50%;
+      background: #E4E8EF;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 9px; font-weight: 700; color: transparent;
+      transition: background 0.25s, color 0.25s;
+    }
+    .dot.visited { background: var(--clr-accent); color: #fff; }
+
+    /* ── Legend ── */
+    .legend-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; font-size: 12px; color: var(--clr-muted); }
+    .legend-line { width: 28px; height: 3px; border-radius: 2px; }
+    .legend-dot  { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+
+    /* ── Export panel ── */
+    #export-instance-id {
+      font-size: 10px; color: var(--clr-muted); margin-bottom: 4px;
+      font-family: monospace;
+    }
+    #export-textarea {
+      width: 100%; height: 130px;
+      font-family: 'Courier New', monospace; font-size: 11px;
+      line-height: 1.5; color: var(--clr-text);
+      background: #F7F8FA; border: 1px solid var(--clr-border);
+      border-radius: 8px; padding: 10px; resize: none;
+    }
+    #export-textarea:focus { outline: none; border-color: var(--clr-accent); }
+    .btn-copy {
+      width: 100%; padding: 9px;
+      border: 1px solid var(--clr-border); border-radius: 8px;
+      background: var(--clr-surface); color: var(--clr-text);
+      font-family: var(--font-ui); font-size: 12px; font-weight: 600;
+      cursor: pointer; transition: background 0.15s;
+    }
+    .btn-copy:hover { background: var(--clr-bg); }
+    .btn-copy.copied { background: var(--clr-success-lt); border-color: #C8E6C9; color: var(--clr-success); }
+
+    /* ── Submit panel ── */
+    #submit-note {
+      font-size: 12px; color: var(--clr-muted); line-height: 1.5;
+      background: var(--clr-bg); border-radius: 8px; padding: 10px 12px;
+      border: 1px solid var(--clr-border);
+    }
+    #submit-note code { font-size: 11px; background: #E4E8EF; padding: 1px 4px; border-radius: 3px; }
+    #submit-order-input {
+      width: 100%; height: 70px;
+      font-family: 'Courier New', monospace; font-size: 12px;
+      line-height: 1.5; color: var(--clr-text);
+      background: #F7F8FA; border: 1px solid var(--clr-border);
+      border-radius: 8px; padding: 10px; resize: none;
+    }
+    #submit-order-input:focus { outline: none; border-color: var(--clr-accent); }
+    #submit-error { font-size: 12px; color: var(--clr-optimal); padding: 0 2px; min-height: 16px; }
+    #btn-submit-solution {
+      width: 100%; padding: 11px;
+      border: none; border-radius: 10px;
+      background: var(--clr-accent); color: #fff;
+      font-family: var(--font-ui); font-size: 13px; font-weight: 600;
+      cursor: pointer; transition: background 0.15s;
+    }
+    #btn-submit-solution:hover { background: #1565C0; }
+    #btn-submit-solution:disabled { opacity: 0.5; cursor: default; }
+
+    /* ── Buttons ── */
+    #btn-restart {
+      width: 100%; padding: 11px;
+      border: none; border-radius: 10px;
+      background: var(--clr-accent); color: #fff;
+      font-family: var(--font-ui); font-size: 13px; font-weight: 600;
+      cursor: pointer; transition: background 0.15s, transform 0.1s;
+      box-shadow: 0 2px 8px rgba(25,118,210,0.25);
+      flex-shrink: 0; margin-top: 8px;
+    }
     #btn-restart:hover { background: #1565C0; }
     #btn-restart:active { transform: scale(0.98); }
 
-    /* Result banner over map */
+    /* ── Result banner ── */
     #result-banner {
-      position: absolute;
-      top: 14px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--clr-surface);
-      border: 1px solid var(--clr-border);
-      border-radius: 40px;
-      padding: 10px 22px;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--clr-text);
-      box-shadow: var(--shadow);
-      display: none;
-      white-space: nowrap;
-      z-index: 1000;
-      pointer-events: none;
+      position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
+      background: var(--clr-surface); border: 1px solid var(--clr-border);
+      border-radius: 40px; padding: 10px 22px;
+      font-size: 13px; font-weight: 600; color: var(--clr-text);
+      box-shadow: var(--shadow); display: none;
+      white-space: nowrap; z-index: 1000; pointer-events: none;
     }
 
-    /* Loading overlay */
+    /* ── Loading ── */
     #loading-overlay {
-      position: absolute;
-      inset: 0;
+      position: absolute; inset: 0;
       background: rgba(247,248,250,0.9);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      z-index: 2000;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 16px; z-index: 2000;
     }
-
-    .spinner {
-      width: 40px;
-      height: 40px;
-      border: 3px solid var(--clr-border);
-      border-top-color: var(--clr-accent);
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-    }
-
+    .spinner { width: 40px; height: 40px; border: 3px solid var(--clr-border); border-top-color: var(--clr-accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
     #loading-overlay p { font-size: 14px; font-weight: 500; color: var(--clr-muted); }
 
     .hidden { display: none !important; }
 
-    /* Custom Leaflet marker styles */
+    /* ── Leaflet markers ── */
     .tsp-marker {
-      width: 28px !important;
-      height: 28px !important;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Inter', sans-serif;
-      font-size: 11px;
-      font-weight: 700;
-      color: #fff;
-      cursor: pointer;
-      border: 2px solid rgba(255,255,255,0.8);
+      width: 28px !important; height: 28px !important;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 700; color: #fff;
+      cursor: pointer; border: 2px solid rgba(255,255,255,0.8);
       box-shadow: 0 2px 8px rgba(0,0,0,0.25);
-      transition: transform 0.15s, box-shadow 0.15s;
-      background: #9E9E9E;
+      transition: transform 0.15s, box-shadow 0.15s; background: #9E9E9E;
     }
-
-    .tsp-marker:hover {
-      transform: scale(1.15);
-      box-shadow: 0 4px 14px rgba(0,0,0,0.3);
-    }
-
+    .tsp-marker:hover { transform: scale(1.15); box-shadow: 0 4px 14px rgba(0,0,0,0.3); }
     .tsp-marker.visited { background: #1976D2; }
-    .tsp-marker.start   { background: #1976D2; border-color: #fff; }
+    .tsp-marker.preview { background: #D32F2F; border-color: #fff; }
 
-    /* Scrollbar */
+    /* ── Scrollbar ── */
     #sidebar::-webkit-scrollbar { width: 4px; }
     #sidebar::-webkit-scrollbar-track { background: transparent; }
     #sidebar::-webkit-scrollbar-thumb { background: var(--clr-border); border-radius: 4px; }
 
-    /* Mobile */
+    /* ── Mobile ── */
     @media (max-width: 600px) {
       #app { grid-template-columns: 1fr; }
-
       #sidebar {
-        position: fixed;
-        right: 0;
-        top: 56px;
-        bottom: 0;
-        width: 80vw !important;
-        max-width: 280px;
+        position: fixed; right: 0; top: 56px; bottom: 0;
+        width: 85vw !important; max-width: 300px;
         z-index: 1500;
         transform: translateX(100%);
         transition: transform 0.3s ease;
-        padding: 20px 16px 24px;
+        padding: 16px 14px 20px;
       }
-
-      #app.sidebar-open #sidebar {
-        transform: translateX(0);
-      }
-
-      #app.sidebar-open #sidebar > * {
-        opacity: 1 !important;
-        pointer-events: auto !important;
-      }
-
-      #sidebar-overlay {
-        display: none;
-        position: fixed;
-        inset: 56px 0 0 0;
-        background: rgba(0,0,0,0.35);
-        z-index: 1400;
-      }
-
+      #app.sidebar-open #sidebar { transform: translateX(0); }
+      #app.sidebar-open #sidebar > * { opacity: 1 !important; pointer-events: auto !important; }
+      #sidebar-overlay { display: none; position: fixed; inset: 56px 0 0 0; background: rgba(0,0,0,0.35); z-index: 1400; }
       #app.sidebar-open #sidebar-overlay { display: block; }
+      #n-picker label { display: none; }
+      #seed-picker label { display: none; }
+      #seed-input { width: 70px; }
     }
   </style>
 </head>
 <body>
 
 <div id="app">
-
   <header id="header">
-    <div class="logo">O Jogo do <span>Caixeiro-Viajante</span></div>
+    <div class="logo">Jogo do <span>Caixeiro-Viajante</span></div>
     <div class="spacer"></div>
     <div id="status-bar">Clique em um ponto para começar</div>
+    <div id="n-picker">
+      <label for="n-select">Pontos:</label>
+      <select id="n-select">
+        <option value="6">6</option>
+        <option value="8">8</option>
+        <option value="10">10</option>
+        <option value="12">12</option>
+        <option value="15" selected>15</option>
+        <option value="18">18</option>
+        <option value="20">20 ⚠️</option>
+      </select>
+    </div>
+    <div id="seed-picker">
+      <label for="seed-input">Seed:</label>
+      <input id="seed-input" type="number" min="0" placeholder="aleatória" title="Digite um número para reproduzir a mesma instância" />
+      <button id="btn-load-seed" title="Carregar instância com esta seed">↵</button>
+    </div>
     <button id="btn-toggle-sidebar" title="Mostrar/ocultar painel">
       <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <rect x="3" y="3" width="18" height="18" rx="2"/>
@@ -417,239 +346,295 @@
 
   <div id="map-container">
     <div id="leaflet-map"></div>
-    <div id="loading-overlay">
-      <div class="spinner"></div>
-      <p>Carregando mapa…</p>
-    </div>
+    <div id="loading-overlay"><div class="spinner"></div><p>Carregando mapa…</p></div>
     <div id="result-banner"></div>
   </div>
 
   <aside id="sidebar">
 
-    <div id="instruction-card">
-      <p><strong>Como jogar:</strong> Clique nos 15 pontos na ordem que achar melhor para criar a rota mais curta possível. Depois, veja como você se saiu contra o algoritmo ótimo!</p>
+    <!-- ── Tabs ── -->
+    <div id="tabs">
+      <button class="tab-btn active" data-tab="play">▶ Jogar</button>
+      <button class="tab-btn" data-tab="export">⬇ Exportar</button>
+      <button class="tab-btn" data-tab="submit">⬆ Enviar</button>
     </div>
 
-    <div id="progress-section">
-      <div class="section-title">Progresso</div>
-      <div id="dots-row"></div>
+    <!-- ══════════════════ TAB: PLAY ══════════════════ -->
+    <div class="tab-panel active" id="tab-play">
+
+      <div class="card blue" style="padding:12px 14px">
+        <p style="font-size:12px;color:#0D47A1;line-height:1.55">
+          <strong>Como jogar:</strong> Clique nos pontos na ordem que achar melhor para criar a rota mais curta. Ao terminar, compare com a rota ótima (Held-Karp).
+        </p>
+      </div>
+
+      <div>
+        <div class="section-title">Progresso</div>
+        <div id="dots-row"></div>
+      </div>
+
+      <div>
+        <div class="section-title">Legenda</div>
+        <div class="legend-row"><div class="legend-dot" style="background:#9E9E9E"></div><span>Não visitado</span></div>
+        <div class="legend-row"><div class="legend-dot" style="background:#1976D2"></div><span>Visitado</span></div>
+        <div class="legend-row"><div class="legend-line" style="background:#1976D2"></div><span>Sua rota</span></div>
+        <div class="legend-row"><div class="legend-line" style="background:#D32F2F; background: repeating-linear-gradient(90deg,#D32F2F 0,#D32F2F 8px,transparent 8px,transparent 13px)"></div><span>Rota ótima (Held-Karp)</span></div>
+      </div>
+
+      <div id="stats-section" class="hidden" style="display:flex;flex-direction:column;gap:10px">
+        <div class="section-title">Resultados</div>
+        <div class="card blue">
+          <div class="block-label">Sua rota</div>
+          <div class="stat-row"><span class="stat-label">Distância</span><span class="stat-value" id="player-dist">—</span></div>
+          <div class="stat-row"><span class="stat-label">Tempo est.</span><span class="stat-sub" id="player-time">—</span></div>
+        </div>
+        <div class="card red">
+          <div class="block-label">Melhor rota (Held-Karp)</div>
+          <div class="stat-row"><span class="stat-label">Distância</span><span class="stat-value" id="optimal-dist">—</span></div>
+          <div class="stat-row"><span class="stat-label">Tempo est.</span><span class="stat-sub" id="optimal-time">—</span></div>
+        </div>
+        <div class="card green">
+          <div class="block-label">Diferença</div>
+          <div class="stat-row"><span class="stat-label">Km extras</span><span class="stat-value" id="diff-km">—</span></div>
+          <div class="stat-row"><span class="stat-label">Acima do ótimo</span><span class="stat-sub" id="diff-pct">—</span></div>
+        </div>
+      </div>
+
     </div>
 
-    <div id="legend">
-      <div class="section-title">Legenda</div>
-      <div class="legend-row">
-        <div class="legend-dot" style="background:#9E9E9E"></div>
-        <span>Ponto não visitado</span>
+    <!-- ══════════════════ TAB: EXPORT ══════════════════ -->
+    <div class="tab-panel" id="tab-export">
+
+      <div class="card blue" style="padding:12px 14px">
+        <p style="font-size:12px;color:#0D47A1;line-height:1.55">
+          Copie os dados da instância atual para testar seu próprio algoritmo. Os IDs dos pontos são fixos enquanto você não reiniciar.
+        </p>
       </div>
-      <div class="legend-row">
-        <div class="legend-dot" style="background:#1976D2"></div>
-        <span>Ponto visitado</span>
+
+      <div>
+        <div class="section-title">Identificação da instância</div>
+        <div id="export-instance-id" style="font-family:monospace;font-size:11px;color:var(--clr-muted);padding:4px 0"></div>
       </div>
-      <div class="legend-row">
-        <div class="legend-line" style="background:#1976D2"></div>
-        <span>Sua rota</span>
+
+      <div>
+        <div class="section-title">JSON — pontos (lat/lon + id)</div>
+        <textarea id="export-textarea" readonly spellcheck="false"></textarea>
+        <button class="btn-copy" id="btn-copy-json" style="margin-top:6px">Copiar JSON</button>
       </div>
-      <div class="legend-row">
-        <div class="legend-line" style="background:#D32F2F"></div>
-        <span>Rota ótima (Held-Karp)</span>
+
+      <div>
+        <div class="section-title">Formato CSV</div>
+        <textarea id="export-csv" readonly spellcheck="false" style="width:100%;height:90px;font-family:'Courier New',monospace;font-size:11px;line-height:1.5;color:var(--clr-text);background:#F7F8FA;border:1px solid var(--clr-border);border-radius:8px;padding:10px;resize:none"></textarea>
+        <button class="btn-copy" id="btn-copy-csv" style="margin-top:6px">Copiar CSV</button>
       </div>
+
+      <div class="card" style="font-size:12px;line-height:1.6;color:var(--clr-muted)">
+        <div class="block-label">Como usar</div>
+        <p>A solução deve ser uma lista dos IDs dos pontos na ordem de visita (começando e terminando em 0 implicitamente). Envie via aba <strong>⬆ Enviar</strong>.</p>
+      </div>
+
     </div>
 
-    <div id="stats-section" class="hidden">
-      <div class="section-title" style="margin-bottom:12px">Resultados</div>
+    <!-- ══════════════════ TAB: SUBMIT ══════════════════ -->
+    <div class="tab-panel" id="tab-submit">
 
-      <div class="stats-block player">
-        <div class="block-label">Sua rota</div>
-        <div class="stat-row">
-          <span class="stat-label">Distância</span>
-          <span class="stat-value" id="player-dist">—</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-label">Tempo est.</span>
-          <span class="stat-sub" id="player-time">—</span>
-        </div>
+      <div class="card blue" style="padding:12px 14px">
+        <p style="font-size:12px;color:#0D47A1;line-height:1.55">
+          Cole aqui a ordem de visita gerada pelo seu algoritmo. Use os IDs da aba <strong>⬇ Exportar</strong>. O retorno ao ponto 0 é automático.
+        </p>
       </div>
 
-      <div class="stats-block optimal">
-        <div class="block-label">Melhor rota (Held-Karp)</div>
-        <div class="stat-row">
-          <span class="stat-label">Distância</span>
-          <span class="stat-value" id="optimal-dist">—</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-label">Tempo est.</span>
-          <span class="stat-sub" id="optimal-time">—</span>
-        </div>
+      <div>
+        <div class="section-title">Instância ativa</div>
+        <div id="submit-instance-id" style="font-family:monospace;font-size:11px;color:var(--clr-muted);padding:4px 0"></div>
       </div>
 
-      <div class="stats-block diff">
-        <div class="block-label">Diferença</div>
-        <div class="stat-row">
-          <span class="stat-label">Km extras</span>
-          <span class="stat-value" id="diff-km">—</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-label">Acima do ótimo</span>
-          <span class="stat-sub" id="diff-pct">—</span>
-        </div>
+      <div>
+        <div class="section-title">Ordem de visita (IDs separados por vírgula ou espaço)</div>
+        <textarea id="submit-order-input" placeholder="Ex: 0, 3, 7, 1, 9, 4, 2, 6, 8, 5, 12, 11, 14, 10, 13" spellcheck="false"></textarea>
       </div>
+
+      <div id="submit-error"></div>
+
+      <button id="btn-submit-solution">Avaliar solução</button>
+
+      <div id="submit-result-card" class="hidden" style="display:flex;flex-direction:column;gap:8px">
+        <div class="card blue">
+          <div class="block-label">Solução enviada</div>
+          <div class="stat-row"><span class="stat-label">Distância</span><span class="stat-value" id="sr-dist">—</span></div>
+          <div class="stat-row"><span class="stat-label">Acima do ótimo</span><span class="stat-sub" id="sr-pct">—</span></div>
+        </div>
+        <div id="sr-preview-note" style="font-size:12px;color:var(--clr-muted);padding:0 2px"></div>
+      </div>
+
     </div>
 
-    <div style="flex:1"></div>
-    <button id="btn-restart">↺ &nbsp;Recomeçar</button>
+    <!-- ── Footer ── -->
+    <div style="flex:1;min-height:8px"></div>
+    <button id="btn-restart">↺ &nbsp;Nova instância</button>
 
   </aside>
 </div>
 
 <script>
 // =============================================================================
-// CONSTANTS
+// CONFIG & STATE
 // =============================================================================
-const N = 15;
 const AVG_SPEED_KMH = 30;
+const SP_BOUNDS = { latMin: -23.70, latMax: -23.48, lonMin: -46.75, lonMax: -46.54 };
 
-const SP_BOUNDS = {
-  latMin: -23.70,
-  latMax: -23.48,
-  lonMin: -46.75,
-  lonMax: -46.54
-};
+let N = 15;
+let currentSeed = 0;
+let instanceId  = '';
+let points      = [];
+let visitOrder  = [];
+let gameOver    = false;
+let optimalOrder = [];
+let optimalDist  = 0;
 
-// =============================================================================
-// STATE
-// =============================================================================
-let points     = [];
-let visitOrder = [];
-let gameOver   = false;
-let leafletMap = null;
-let leafletMarkers = [];
+let leafletMap      = null;
+let leafletMarkers  = [];
 let playerPolyline  = null;
 let optimalPolyline = null;
+let previewPolyline = null;
 
 // =============================================================================
-// DOM
+// DOM REFS
 // =============================================================================
-const statusBar    = document.getElementById('status-bar');
-const dotsRow      = document.getElementById('dots-row');
-const statsSection = document.getElementById('stats-section');
-const loadingEl    = document.getElementById('loading-overlay');
-const resultBanner = document.getElementById('result-banner');
+const statusBar        = document.getElementById('status-bar');
+const dotsRow          = document.getElementById('dots-row');
+const statsSection     = document.getElementById('stats-section');
+const loadingEl        = document.getElementById('loading-overlay');
+const resultBanner     = document.getElementById('result-banner');
+const exportTextarea   = document.getElementById('export-textarea');
+const exportCsv        = document.getElementById('export-csv');
+const exportInstanceId = document.getElementById('export-instance-id');
+const submitInstanceId = document.getElementById('submit-instance-id');
+const submitOrderInput = document.getElementById('submit-order-input');
+const submitError      = document.getElementById('submit-error');
+const submitResultCard = document.getElementById('submit-result-card');
+const nSelect          = document.getElementById('n-select');
+const seedInput        = document.getElementById('seed-input');
 
 // =============================================================================
-// MATH UTILITIES
+// MATH
 // =============================================================================
-function toRad(deg) { return deg * Math.PI / 180; }
+function toRad(d) { return d * Math.PI / 180; }
 
 function haversine(a, b) {
   const R = 6371;
-  const dLat = toRad(b.lat - a.lat);
-  const dLon = toRad(b.lon - a.lon);
-  const sinLat = Math.sin(dLat / 2);
-  const sinLon = Math.sin(dLon / 2);
-  const c = 2 * Math.asin(Math.sqrt(
-    sinLat * sinLat +
-    Math.cos(toRad(a.lat)) * Math.cos(toRad(b.lat)) * sinLon * sinLon
-  ));
-  return R * c;
+  const dLat = toRad(b.lat - a.lat), dLon = toRad(b.lon - a.lon);
+  const s = Math.sin(dLat/2), t = Math.sin(dLon/2);
+  return 2 * R * Math.asin(Math.sqrt(s*s + Math.cos(toRad(a.lat))*Math.cos(toRad(b.lat))*t*t));
 }
 
 function routeDistance(order, pts) {
   let d = 0;
   for (let i = 0; i < order.length - 1; i++) d += haversine(pts[order[i]], pts[order[i+1]]);
-  d += haversine(pts[order[order.length - 1]], pts[order[0]]);
+  d += haversine(pts[order[order.length-1]], pts[order[0]]);
   return d;
 }
 
-function fmtKm(km) { return km.toFixed(1) + ' km'; }
+function fmtKm(km)  { return km.toFixed(1) + ' km'; }
+function fmtTime(km){ const m = Math.round((km/AVG_SPEED_KMH)*60); return m < 60 ? m+'min' : Math.floor(m/60)+'h'+String(m%60).padStart(2,'0')+'min'; }
+function fmtPct(pct){ return (pct >= 0 ? '+' : '') + pct.toFixed(1) + '%'; }
 
-function fmtTime(km) {
-  const totalMin = Math.round((km / AVG_SPEED_KMH) * 60);
-  if (totalMin < 60) return totalMin + ' min';
-  const h = Math.floor(totalMin / 60);
-  const m = totalMin % 60;
-  return h + 'h ' + String(m).padStart(2, '0') + 'min';
+// =============================================================================
+// INSTANCE ID
+// =============================================================================
+function makeInstanceId(pts) {
+  // Deterministic short hash from coordinates
+  const str = pts.map(p => p.lat.toFixed(5)+','+p.lon.toFixed(5)).join('|');
+  let h = 0;
+  for (let i = 0; i < str.length; i++) h = (Math.imul(31, h) + str.charCodeAt(i)) | 0;
+  return 'TSP-N'+pts.length+'-'+Math.abs(h).toString(36).toUpperCase().slice(0,8);
+}
+
+// =============================================================================
+// SEEDED PRNG (mulberry32)
+// =============================================================================
+function makePRNG(seed) {
+  let s = seed >>> 0;
+  return function() {
+    s += 0x6D2B79F5;
+    let t = Math.imul(s ^ s >>> 15, 1 | s);
+    t ^= t + Math.imul(t ^ t >>> 7, 61 | t);
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
 }
 
 // =============================================================================
 // POINT GENERATION
 // =============================================================================
-function generatePoints() {
-  const pts = [];
-  const MIN_DIST_KM = 1.5;
+function generatePoints(n, seed) {
+  const rng = makePRNG(seed);
+  const pts = [], MIN_DIST_KM = 1.0;
   let attempts = 0;
-  while (pts.length < N && attempts < 2000) {
+  while (pts.length < n && attempts < 5000) {
     attempts++;
-    const lat = SP_BOUNDS.latMin + Math.random() * (SP_BOUNDS.latMax - SP_BOUNDS.latMin);
-    const lon = SP_BOUNDS.lonMin + Math.random() * (SP_BOUNDS.lonMax - SP_BOUNDS.lonMin);
-    const candidate = { lat, lon, id: pts.length };
-    const tooClose = pts.some(p => haversine(p, candidate) < MIN_DIST_KM);
-    if (!tooClose) pts.push(candidate);
+    const lat = SP_BOUNDS.latMin + rng() * (SP_BOUNDS.latMax - SP_BOUNDS.latMin);
+    const lon = SP_BOUNDS.lonMin + rng() * (SP_BOUNDS.lonMax - SP_BOUNDS.lonMin);
+    const c = { lat, lon, id: pts.length };
+    if (!pts.some(p => haversine(p, c) < MIN_DIST_KM)) pts.push(c);
   }
   return pts;
 }
 
 // =============================================================================
-// HELD-KARP ALGORITHM
+// HELD-KARP
 // =============================================================================
 function heldKarp(pts) {
   const n = pts.length;
-  const dist = Array.from({ length: n }, (_, i) =>
-    Array.from({ length: n }, (_, j) => haversine(pts[i], pts[j]))
-  );
-  const FULL = (1 << n) - 1;
-  const INF  = Infinity;
-  const dp   = Array.from({ length: 1 << n }, () => new Float64Array(n).fill(INF));
-  const prev = Array.from({ length: 1 << n }, () => new Int8Array(n).fill(-1));
-
+  const dist = Array.from({length:n}, (_,i) => Array.from({length:n}, (_,j) => haversine(pts[i],pts[j])));
+  const FULL = (1<<n)-1;
+  const dp   = Array.from({length:1<<n}, () => new Float64Array(n).fill(Infinity));
+  const prev = Array.from({length:1<<n}, () => new Int8Array(n).fill(-1));
   dp[1][0] = 0;
-
   for (let mask = 1; mask <= FULL; mask++) {
     for (let u = 0; u < n; u++) {
-      if (!(mask & (1 << u))) continue;
-      if (dp[mask][u] === INF) continue;
+      if (!(mask&(1<<u)) || dp[mask][u]===Infinity) continue;
       for (let v = 0; v < n; v++) {
-        if (mask & (1 << v)) continue;
-        const newMask = mask | (1 << v);
-        const newCost = dp[mask][u] + dist[u][v];
-        if (newCost < dp[newMask][v]) {
-          dp[newMask][v] = newCost;
-          prev[newMask][v] = u;
-        }
+        if (mask&(1<<v)) continue;
+        const nm = mask|(1<<v), nc = dp[mask][u]+dist[u][v];
+        if (nc < dp[nm][v]) { dp[nm][v]=nc; prev[nm][v]=u; }
       }
     }
   }
-
-  let best = INF, lastCity = -1;
-  for (let u = 1; u < n; u++) {
-    const cost = dp[FULL][u] + dist[u][0];
-    if (cost < best) { best = cost; lastCity = u; }
-  }
-
-  const path = [];
-  let mask = FULL, city = lastCity;
-  while (city !== -1) {
-    path.push(city);
-    const p = prev[mask][city];
-    mask ^= (1 << city);
-    city = p;
-  }
+  let best=Infinity, last=-1;
+  for (let u=1;u<n;u++) { const c=dp[FULL][u]+dist[u][0]; if(c<best){best=c;last=u;} }
+  const path=[]; let mask=FULL,city=last;
+  while(city!==-1){ path.push(city); const p=prev[mask][city]; mask^=(1<<city); city=p; }
   path.reverse();
-  return { order: path, distance: best };
+  return {order:path, distance:best};
+}
+
+// Greedy nearest-neighbor (fallback for large N where Held-Karp is too slow)
+function nearestNeighbor(pts) {
+  const n = pts.length, visited = new Uint8Array(n);
+  const order = [0]; visited[0] = 1;
+  while (order.length < n) {
+    let cur = order[order.length-1], best = Infinity, bestJ = -1;
+    for (let j=0;j<n;j++) { if(!visited[j]){ const d=haversine(pts[cur],pts[j]); if(d<best){best=d;bestJ=j;} } }
+    order.push(bestJ); visited[bestJ]=1;
+  }
+  return {order, distance:routeDistance(order,pts)};
+}
+
+function computeOptimal(pts) {
+  if (pts.length <= 20) return heldKarp(pts);
+  return nearestNeighbor(pts);
 }
 
 // =============================================================================
-// LEAFLET CUSTOM ICON
+// MARKERS
 // =============================================================================
-function makeIcon(label, visited) {
-  const bg = visited ? '#1976D2' : '#9E9E9E';
-  const text = visited ? label : '';
-  const html = `<div class="tsp-marker${visited ? ' visited' : ''}" style="background:${bg}">${text}</div>`;
+function makeIcon(label, state) {
+  // state: 'unvisited' | 'visited' | 'preview'
+  const bg = state==='visited'?'#1976D2': state==='preview'?'#D32F2F':'#9E9E9E';
+  const cls = state==='visited'?' visited': state==='preview'?' preview':'';
   return L.divIcon({
-    html,
-    className: '',
-    iconSize: [28, 28],
-    iconAnchor: [14, 14],
-    popupAnchor: [0, -14]
+    html:`<div class="tsp-marker${cls}" style="background:${bg}">${label}</div>`,
+    className:'', iconSize:[28,28], iconAnchor:[14,14], popupAnchor:[0,-14]
   });
 }
 
@@ -658,19 +643,33 @@ function makeIcon(label, visited) {
 // =============================================================================
 function buildProgressDots() {
   dotsRow.innerHTML = '';
-  for (let i = 0; i < N; i++) {
-    const dot = document.createElement('div');
-    dot.className = 'dot';
-    dot.id = 'dot-' + i;
-    dotsRow.appendChild(dot);
+  for (let i=0;i<N;i++) {
+    const d = document.createElement('div');
+    d.className='dot'; d.id='dot-'+i; dotsRow.appendChild(d);
   }
 }
-
 function updateDot(orderIdx) {
-  const dot = document.getElementById('dot-' + orderIdx);
-  if (!dot) return;
-  dot.classList.add('visited');
-  dot.textContent = orderIdx + 1;
+  const d = document.getElementById('dot-'+orderIdx);
+  if(!d) return; d.classList.add('visited'); d.textContent=orderIdx+1;
+}
+
+// =============================================================================
+// EXPORT DATA
+// =============================================================================
+function refreshExportData() {
+  exportInstanceId.textContent = `ID: ${instanceId}  ·  seed: ${currentSeed}  ·  n: ${N}`;
+  submitInstanceId.textContent = `ID: ${instanceId}  ·  seed: ${currentSeed}  ·  n: ${N}`;
+
+  const json = JSON.stringify({
+    instance_id: instanceId,
+    seed: currentSeed,
+    n: N,
+    points: points.map(p => ({ id:p.id, lat:+p.lat.toFixed(7), lon:+p.lon.toFixed(7) }))
+  }, null, 2);
+  exportTextarea.value = json;
+
+  const csv = ['id,lat,lon', ...points.map(p=>`${p.id},${p.lat.toFixed(7)},${p.lon.toFixed(7)}`)].join('\n');
+  exportCsv.value = csv;
 }
 
 // =============================================================================
@@ -679,37 +678,22 @@ function updateDot(orderIdx) {
 function updateStatus() {
   if (gameOver) return;
   const n = visitOrder.length;
-  if (n === 0) {
-    statusBar.innerHTML = 'Clique em um ponto para começar';
-  } else if (n < N) {
-    statusBar.innerHTML = `<strong>${n}</strong> de ${N} pontos visitados`;
-  }
+  statusBar.innerHTML = n===0 ? 'Clique em um ponto para começar'
+    : `<strong>${n}</strong> de ${N} pontos visitados`;
 }
 
 // =============================================================================
 // MARKER CLICK
 // =============================================================================
 function onMarkerClick(idx) {
-  if (gameOver) return;
-  if (visitOrder.includes(idx)) return;
-
+  if (gameOver || visitOrder.includes(idx)) return;
   visitOrder.push(idx);
   const orderIdx = visitOrder.length - 1;
-
-  // Update marker icon
-  leafletMarkers[idx].setIcon(makeIcon(String(orderIdx + 1), true));
-
-  // Update dot
+  leafletMarkers[idx].setIcon(makeIcon(String(orderIdx+1), 'visited'));
   updateDot(orderIdx);
-
-  // Draw partial player route
   drawPlayerRoute(false);
-
   updateStatus();
-
-  if (visitOrder.length === N) {
-    finishGame();
-  }
+  if (visitOrder.length === N) finishGame();
 }
 
 // =============================================================================
@@ -718,29 +702,40 @@ function onMarkerClick(idx) {
 function drawPlayerRoute(closed) {
   if (playerPolyline) leafletMap.removeLayer(playerPolyline);
   if (visitOrder.length < 2) return;
-
-  const latlngs = visitOrder.map(i => [points[i].lat, points[i].lon]);
-  if (closed) latlngs.push([points[visitOrder[0]].lat, points[visitOrder[0]].lon]);
-
-  playerPolyline = L.polyline(latlngs, {
-    color: '#1976D2',
-    weight: 3,
-    opacity: 0.9
-  }).addTo(leafletMap);
+  const ll = visitOrder.map(i => [points[i].lat, points[i].lon]);
+  if (closed) ll.push([points[visitOrder[0]].lat, points[visitOrder[0]].lon]);
+  playerPolyline = L.polyline(ll, {color:'#1976D2', weight:3, opacity:0.9}).addTo(leafletMap);
 }
 
 function drawOptimalRoute(order) {
   if (optimalPolyline) leafletMap.removeLayer(optimalPolyline);
-  const latlngs = [
-    ...order.map(i => [points[i].lat, points[i].lon]),
-    [points[order[0]].lat, points[order[0]].lon]
-  ];
-  optimalPolyline = L.polyline(latlngs, {
-    color: '#D32F2F',
-    weight: 3,
-    opacity: 0.85,
-    dashArray: '8 5'
-  }).addTo(leafletMap);
+  const ll = [...order.map(i=>[points[i].lat,points[i].lon]), [points[order[0]].lat,points[order[0]].lon]];
+  optimalPolyline = L.polyline(ll, {color:'#D32F2F', weight:3, opacity:0.85, dashArray:'8 5'}).addTo(leafletMap);
+}
+
+function drawPreviewRoute(order) {
+  if (previewPolyline) leafletMap.removeLayer(previewPolyline);
+  const ll = [...order.map(i=>[points[i].lat,points[i].lon]), [points[order[0]].lat,points[order[0]].lon]];
+  previewPolyline = L.polyline(ll, {color:'#9333EA', weight:3, opacity:0.8, dashArray:'6 4'}).addTo(leafletMap);
+  // Restore marker icons
+  leafletMarkers.forEach((m,i) => {
+    const vi = visitOrder.indexOf(i);
+    if (vi >= 0) m.setIcon(makeIcon(String(vi+1), 'visited'));
+    else m.setIcon(makeIcon('', 'unvisited'));
+  });
+  // Highlight submitted order
+  order.forEach((id,rank) => {
+    leafletMarkers[id].setIcon(makeIcon(String(rank+1), 'preview'));
+  });
+}
+
+function clearPreview() {
+  if (previewPolyline) { leafletMap.removeLayer(previewPolyline); previewPolyline = null; }
+  leafletMarkers.forEach((m,i) => {
+    const vi = visitOrder.indexOf(i);
+    if (vi >= 0) m.setIcon(makeIcon(String(vi+1), 'visited'));
+    else m.setIcon(makeIcon('', 'unvisited'));
+  });
 }
 
 // =============================================================================
@@ -748,125 +743,175 @@ function drawOptimalRoute(order) {
 // =============================================================================
 function finishGame() {
   gameOver = true;
-
-  // Close player route
   drawPlayerRoute(true);
-
-  // Run Held-Karp (deferred so UI updates first)
   setTimeout(() => {
-    const { order: optOrder, distance: optDist } = heldKarp(points);
+    const result = computeOptimal(points);
+    optimalOrder = result.order; optimalDist = result.distance;
     const playerDist = routeDistance(visitOrder, points);
-
-    drawOptimalRoute(optOrder);
-    showResults(playerDist, optDist);
+    drawOptimalRoute(optimalOrder);
+    showResults(playerDist, optimalDist);
   }, 80);
 }
 
-// =============================================================================
-// SHOW RESULTS
-// =============================================================================
 function showResults(playerDist, optDist) {
   const diffKm  = playerDist - optDist;
-  const diffPct = ((diffKm / optDist) * 100).toFixed(1);
-
+  const diffPct = (diffKm / optDist * 100).toFixed(1);
   document.getElementById('player-dist').textContent  = fmtKm(playerDist);
   document.getElementById('player-time').textContent  = fmtTime(playerDist);
   document.getElementById('optimal-dist').textContent = fmtKm(optDist);
   document.getElementById('optimal-time').textContent = fmtTime(optDist);
   document.getElementById('diff-km').textContent      = '+' + fmtKm(diffKm);
   document.getElementById('diff-pct').textContent     = '+' + diffPct + '% acima do ótimo';
-
   statsSection.classList.remove('hidden');
-
-  let emoji = diffPct <= 5 ? '🏆 Excelente!' : diffPct <= 15 ? '👍 Muito bom!' : diffPct <= 30 ? '🙂 Bom!' : '💡 Tente de novo!';
-  resultBanner.textContent = emoji + '  Sua rota: ' + fmtKm(playerDist) + ' · Ótima: ' + fmtKm(optDist);
+  statsSection.style.display = 'flex';
+  const emoji = diffPct<=5?'🏆':diffPct<=15?'👍':diffPct<=30?'🙂':'💡';
+  resultBanner.textContent = `${emoji} Sua rota: ${fmtKm(playerDist)} · Ótima: ${fmtKm(optDist)}`;
   resultBanner.style.display = 'block';
-
   statusBar.innerHTML = 'Rota completa! ' + emoji;
 }
+
+// =============================================================================
+// SUBMIT SOLUTION
+// =============================================================================
+document.getElementById('btn-submit-solution').addEventListener('click', () => {
+  submitError.textContent = '';
+  submitResultCard.classList.add('hidden');
+  clearPreview();
+
+  const raw = submitOrderInput.value.trim();
+  if (!raw) { submitError.textContent = 'Cole a ordem de visita primeiro.'; return; }
+
+  const ids = raw.split(/[\s,;]+/).filter(Boolean).map(Number);
+  if (ids.some(isNaN)) { submitError.textContent = 'IDs inválidos. Use apenas números inteiros.'; return; }
+  if (ids.length !== N) { submitError.textContent = `Esperado ${N} IDs, recebido ${ids.length}.`; return; }
+  const sorted = [...ids].sort((a,b)=>a-b);
+  for (let i=0;i<N;i++) if(sorted[i]!==i) { submitError.textContent = `ID inválido: ${sorted[i]}. Os IDs devem ser 0 a ${N-1}.`; return; }
+
+  const dist = routeDistance(ids, points);
+
+  // Compute optimal if not done yet (game may not be finished)
+  if (!optimalDist) {
+    const r = computeOptimal(points);
+    optimalOrder = r.order; optimalDist = r.distance;
+  }
+
+  const pct = (dist - optimalDist) / optimalDist * 100;
+
+  document.getElementById('sr-dist').textContent = fmtKm(dist);
+  document.getElementById('sr-pct').textContent  = fmtPct(pct) + ' acima do ótimo (' + fmtKm(optimalDist) + ')';
+  submitResultCard.classList.remove('hidden');
+  submitResultCard.style.display = 'flex';
+  document.getElementById('sr-preview-note').textContent = 'Rota em roxo no mapa.';
+
+  drawPreviewRoute(ids);
+});
+
+function esc(s) { return s.replace(/[<>&"]/g, c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c])); }
 
 // =============================================================================
 // INIT MAP
 // =============================================================================
 function initMap() {
   loadingEl.style.display = 'flex';
+  N = parseInt(nSelect.value, 10);
 
   // Reset state
-  points     = generatePoints();
-  visitOrder = [];
-  gameOver   = false;
+  currentSeed = parseInt(seedInput.value, 10);
+  if (isNaN(currentSeed) || currentSeed < 0) currentSeed = Math.floor(Math.random() * 1e9);
+  currentSeed = currentSeed >>> 0; // force uint32
+  seedInput.value = currentSeed;
 
-  // Clear previous polylines
-  if (playerPolyline)  { if (leafletMap) leafletMap.removeLayer(playerPolyline);  playerPolyline  = null; }
-  if (optimalPolyline) { if (leafletMap) leafletMap.removeLayer(optimalPolyline); optimalPolyline = null; }
+  points = generatePoints(N, currentSeed);
+  instanceId = makeInstanceId(points);
+  visitOrder = []; gameOver = false;
+  optimalOrder = []; optimalDist = 0;
+
+  if (playerPolyline)  { leafletMap && leafletMap.removeLayer(playerPolyline);  playerPolyline  = null; }
+  if (optimalPolyline) { leafletMap && leafletMap.removeLayer(optimalPolyline); optimalPolyline = null; }
+  if (previewPolyline) { leafletMap && leafletMap.removeLayer(previewPolyline); previewPolyline = null; }
 
   buildProgressDots();
   statsSection.classList.add('hidden');
+  statsSection.style.display = '';
+  submitResultCard.classList.add('hidden');
+  submitResultCard.style.display = '';
+  submitOrderInput.value = '';
+  submitError.textContent = '';
   resultBanner.style.display = 'none';
   updateStatus();
+  refreshExportData();
 
   if (!leafletMap) {
-    // First init
-    leafletMap = L.map('leaflet-map', {
-      center: [-23.5505, -46.6333],
-      zoom: 11,
-      zoomControl: true
-    });
-
+    leafletMap = L.map('leaflet-map', {center:[-23.5505,-46.6333], zoom:11, zoomControl:true});
     L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-      attribution: '© OpenStreetMap contributors © CARTO',
-      subdomains: 'abcd',
-      maxZoom: 19
+      attribution:'© OpenStreetMap contributors © CARTO', subdomains:'abcd', maxZoom:19
     }).addTo(leafletMap);
   } else {
-    // Remove old markers
     leafletMarkers.forEach(m => leafletMap.removeLayer(m));
   }
 
   leafletMarkers = [];
-
-  // Add markers
-  points.forEach((p, i) => {
-    const marker = L.marker([p.lat, p.lon], {
-      icon: makeIcon('', false),
-      zIndexOffset: 100
-    }).addTo(leafletMap);
-
-    marker.on('click', () => onMarkerClick(i));
-    leafletMarkers.push(marker);
+  points.forEach((p,i) => {
+    const m = L.marker([p.lat,p.lon], {icon:makeIcon('','unvisited'), zIndexOffset:100}).addTo(leafletMap);
+    m.on('click', () => onMarkerClick(i));
+    leafletMarkers.push(m);
   });
 
   loadingEl.style.display = 'none';
 }
 
 // =============================================================================
+// TABS
+// =============================================================================
+function switchTab(id) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab===id));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id==='tab-'+id));
+}
+
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+});
+
+// =============================================================================
 // SIDEBAR TOGGLE
 // =============================================================================
-const appEl = document.getElementById('app');
+const appEl    = document.getElementById('app');
 const isMobile = () => window.innerWidth <= 600;
 
 document.getElementById('btn-toggle-sidebar').addEventListener('click', () => {
-  if (isMobile()) {
-    appEl.classList.toggle('sidebar-open');
-  } else {
-    appEl.classList.toggle('sidebar-collapsed');
-    setTimeout(() => leafletMap && leafletMap.invalidateSize(), 320);
-  }
+  if (isMobile()) appEl.classList.toggle('sidebar-open');
+  else { appEl.classList.toggle('sidebar-collapsed'); setTimeout(()=>leafletMap&&leafletMap.invalidateSize(), 320); }
 });
 
-document.getElementById('sidebar-overlay').addEventListener('click', () => {
-  appEl.classList.remove('sidebar-open');
-});
+document.getElementById('sidebar-overlay').addEventListener('click', () => appEl.classList.remove('sidebar-open'));
 
-document.getElementById('btn-restart').addEventListener('click', () => {
-  appEl.classList.remove('sidebar-open');
-  initMap();
-});
+// =============================================================================
+// N SELECT / RESTART
+// =============================================================================
+nSelect.addEventListener('change', () => { if (confirm('Trocar o número de pontos vai reiniciar a partida. Continuar?')) initMap(); else nSelect.value = N; });
+document.getElementById('btn-load-seed').addEventListener('click', () => initMap());
+seedInput.addEventListener('keydown', e => { if (e.key === 'Enter') initMap(); });
+document.getElementById('btn-restart').addEventListener('click', () => { seedInput.value = ''; appEl.classList.remove('sidebar-open'); initMap(); });
+
+// =============================================================================
+// COPY BUTTONS
+// =============================================================================
+function setupCopy(btnId, getText) {
+  const btn = document.getElementById(btnId);
+  btn.addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(getText()); }
+    catch(_) { const ta=document.createElement('textarea'); ta.value=getText(); document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); }
+    btn.textContent='✓ Copiado!'; btn.classList.add('copied');
+    setTimeout(()=>{ btn.textContent=btnId==='btn-copy-json'?'Copiar JSON':'Copiar CSV'; btn.classList.remove('copied'); },1800);
+  });
+}
+setupCopy('btn-copy-json', ()=>exportTextarea.value);
+setupCopy('btn-copy-csv',  ()=>exportCsv.value);
 
 // =============================================================================
 // START
 // =============================================================================
-document.addEventListener('DOMContentLoaded', initMap);
+document.addEventListener('DOMContentLoaded', () => { initMap(); });
 </script>
 </body>
 </html>
